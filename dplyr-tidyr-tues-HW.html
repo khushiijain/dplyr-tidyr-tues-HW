@@ -115,14 +115,14 @@ Attaching package: 'dplyr'</code></pre>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>spotify <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/Users/harshitajain/Downloads/Everything/2023 Onwards/Data Management/R Pojects/dplyr-tidyr-tues-HW/top10s.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>spotify <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"top-spotify-songs-from-20102019-by-year.Rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="e1.1" class="level3">
 <h3 class="anchored" data-anchor-id="e1.1">E1.1</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> <span class="fu">distinct</span>(title) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> <span class="fu">distinct</span>(artist) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> <span class="fu">distinct</span>(top.genre) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> <span class="fu">distinct</span>(<span class="st">`</span><span class="at">top genre</span><span class="st">`</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Using the distinct function, we get songs = 584, artists = 184 and genres = 50</p>
 </section>
@@ -213,7 +213,7 @@ Attaching package: 'dplyr'</code></pre>
 <h3 class="anchored" data-anchor-id="e1.4">E1.4</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>genre_wise_stats <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(top.genre) <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(<span class="st">`</span><span class="at">top genre</span><span class="st">`</span>) <span class="sc">|&gt;</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">min_bpm =</span> <span class="fu">min</span>(bpm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_bpm =</span> <span class="fu">max</span>(bpm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
@@ -236,7 +236,7 @@ Attaching package: 'dplyr'</code></pre>
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">top.genre</th>
+<th style="text-align: left;">top genre</th>
 <th style="text-align: right;">min_bpm</th>
 <th style="text-align: right;">max_bpm</th>
 <th style="text-align: right;">mean_bpm</th>
@@ -671,7 +671,11 @@ Attaching package: 'dplyr'</code></pre>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> median_danceability, <span class="at">color =</span> <span class="st">"Median Danceability"</span>), <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Median Energy and Danceability 2010-2019"</span>,</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Year"</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Median Value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Median Value"</span>)<span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Median Energy"</span> <span class="ot">=</span> <span class="st">"red"</span>, <span class="st">"Median Danceability"</span> <span class="ot">=</span> <span class="st">"blue"</span>)) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Median Energy"</span> <span class="ot">=</span> <span class="st">"solid"</span>, <span class="st">"Median Danceability"</span> <span class="ot">=</span> <span class="st">"dashed"</span>)) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="dplyr-tidyr-tues-HW_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>

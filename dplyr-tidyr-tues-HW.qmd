@@ -11,7 +11,7 @@ library(dplyr)
 library(knitr)
 library(ggplot2)
 library(tidyr)
-spotify <- read.csv("/Users/harshitajain/Downloads/Everything/2023 Onwards/Data Management/R Pojects/dplyr-tidyr-tues-HW/top10s.csv")
+spotify <- readRDS("top-spotify-songs-from-20102019-by-year.Rds")
 ```
 
 ### E1.1
@@ -19,7 +19,7 @@ spotify <- read.csv("/Users/harshitajain/Downloads/Everything/2023 Onwards/Data 
 ```{r}
 df1 <- spotify |> distinct(title) |> nrow()
 df2 <- spotify |> distinct(artist) |> nrow()
-df3 <- spotify |> distinct(top.genre) |> nrow()
+df3 <- spotify |> distinct(`top genre`) |> nrow()
 ```
 
 Using the distinct function, we get songs = `r df1`, artists = `r df2` and genres = `r df3`
@@ -59,7 +59,7 @@ most_pop_artist_song_count <- pop_artist |>
 
 ```{r}
 genre_wise_stats <- spotify |>
-  group_by(top.genre) |>
+  group_by(`top genre`) |>
   summarise(
     min_bpm = min(bpm, na.rm = TRUE),
     max_bpm = max(bpm, na.rm = TRUE),
@@ -92,7 +92,11 @@ ggplot(data = year_wise_stats, aes(x = year, group = 1)) +
   geom_line(aes(y = median_danceability, color = "Median Danceability"), color = "blue") +
   labs(title = "Median Energy and Danceability 2010-2019",
        x = "Year",
-       y = "Median Value")
+       y = "Median Value")+
+scale_color_manual(values = c("Median Energy" = "red", "Median Danceability" = "blue")) +
+  scale_linetype_manual(values = c("Median Energy" = "solid", "Median Danceability" = "dashed")) +
+  theme_minimal() +
+  theme(legend.position = "top")
 ```
 
 # Exercise 2
