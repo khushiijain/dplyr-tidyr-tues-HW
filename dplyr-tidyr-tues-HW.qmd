@@ -85,7 +85,9 @@ year_wise_stats <- spotify |>
 ### E1.6
 
 ```{r}
-ggplot(data = year_wise_stats, aes(x = year)) +
+year_wise_stats$year <- factor(year_wise_stats$year)
+
+ggplot(data = year_wise_stats, aes(x = year, group = 1)) +
   geom_line(aes(y = median_energy, color = "Median Energy"), color = "red") +
   geom_line(aes(y = median_danceability, color = "Median Danceability"), color = "blue") +
   labs(title = "Median Energy and Danceability 2010-2019",
