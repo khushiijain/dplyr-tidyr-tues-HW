@@ -14,7 +14,10 @@ library(tidyr)
 spotify <- readRDS("top-spotify-songs-from-20102019-by-year.Rds")
 ```
 
+Exploring Spotify dataset to gain insights into the songs, artists, and genres present in the dataset.
+
 ### E1.1
+We start by identifying the number of unique songs, artists, and genres in the dataset using the `distinct` function.
 
 ```{r}
 df1 <- spotify |> distinct(title) |> nrow()
@@ -22,18 +25,24 @@ df2 <- spotify |> distinct(artist) |> nrow()
 df3 <- spotify |> distinct(`top genre`) |> nrow()
 ```
 
-Using the distinct function, we get songs = `r df1`, artists = `r df2` and genres = `r df3`
+Using the `distinct` function, we get songs = `r df1`, artists = `r df2` and genres = `r df3`
 
-### E1.2
+### E1.2 Unique Songs, Artists, and Genres
+Now, we will analyze the dataset's temporal distribution by counting the number of songs per year.
 
 ```{r}
 songs.per.year <- spotify |> group_by(year) |>
   summarise(n = n())
+```
 
+The table below displays the number of songs per year:
+
+```{r}
 knitr::kable(songs.per.year, caption = "Number of Songs per Year")
 ```
 
-### E1.3
+### E1.3 Number of Songs per Year
+In this section, we determine the most popular artist in the dataset and the count of their songs.
 
 ```{r}
 # Calculate the number of unique songs per artist
@@ -53,9 +62,10 @@ most_pop_artist_song_count <- pop_artist |>
   pull(n)
 ```
 
-| Using the full function, we got the most popular artist ***`r most_pop_artist`***, with the song count of ***`r most_pop_artist_song_count`***.
+| Using the `full` function, we got the most popular artist ***`r most_pop_artist`***, with the song count of ***`r most_pop_artist_song_count`***.
 
-### E1.4
+### E1.4 Statistics for Different Musical Genres
+Next, we explore the statistics for different musical genres, including minimum BPM, maximum BPM, mean BPM, median BPM, and the number of unique songs within each genre.
 
 ```{r}
 genre_wise_stats <- spotify |>
@@ -67,11 +77,16 @@ genre_wise_stats <- spotify |>
     median_bpm = median(bpm, na.rm = TRUE),
     num_songs = n_distinct(title)  ## no single song is repeated
   )
+```
 
+The following table displays the statistics for different musical genres:
+
+```{r}
 knitr::kable(genre_wise_stats, caption = "Statistics for Different Musical Genres")
 ```
 
-### E1.5
+### E1.5 Temporal Evolution of Median Energy and Danceability
+We now analyze the temporal evolution of median annual energy and danceability.
 
 ```{r}
 year_wise_stats <- spotify |>
@@ -82,7 +97,7 @@ year_wise_stats <- spotify |>
   )
 ```
 
-### E1.6
+### E1.6 Line Representation of Median Energy and Danceability
 
 ```{r}
 year_wise_stats$year <- factor(year_wise_stats$year)
@@ -101,11 +116,13 @@ scale_color_manual(values = c("Median Energy" = "red", "Median Danceability" = "
 
 # Exercise 2
 
+In the next exercise, we delve into the "dropout" dataset to analyze the median age at enrollment based on gender and marital status.
+
 ```{r}
 dropout <- readRDS("dropout.Rds")
 ```
 
-### E2.1
+### E2.1 Median Age by Gender and Marital Status
 
 ```{r}
 median_age <- dropout |>
@@ -113,18 +130,20 @@ median_age <- dropout |>
   summarise(median_age = median(`Age at enrollment`, na.rm = TRUE))
 ```
 
-### E2.2
-
+### E2.2 Gender-wise median age for different Marital Status
 ```{r}
 gender_wise_median_age <- median_age |>
   pivot_wider(names_from = Gender, values_from = median_age)
 
 colnames(gender_wise_median_age) <- c("Marital status", "Female", "Male")
+```
 
+The table represents the same result:
+```{r}
 knitr::kable(gender_wise_median_age)
 ```
 
-### E2.3
+### E2.3 Conditional Mean of Curricular Units for different Targets
 
 ```{r}
 mean_units <- dropout |>
@@ -132,7 +151,7 @@ mean_units <- dropout |>
   summarise(across(starts_with("Curricular units"), mean))
 ```
 
-### E2.4
+### E2.4 Curricular Units Conditional Mean for 1st Semester over different Targets
 
 ```{r}
 reversed_data <- mean_units |>
@@ -143,7 +162,10 @@ reversed_data <- mean_units |>
 
 final_data <- reversed_data |>
   pivot_wider(names_from = Target, values_from = Mean)
+```
 
+Table:
+```{r}
 knitr::kable(final_data, caption = "Curricular Units Mean for 1st Semester over different Targets")
 ```
 ## 
